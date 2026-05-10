@@ -32,21 +32,19 @@ export default function Home() {
                 <div className="max-w-5xl mx-auto px-6 sm:px-10 pt-16 sm:pt-24 pb-20 grid md:grid-cols-12 gap-10 items-center">
                     <div className="md:col-span-7 fade-rise">
                         <p className="font-mono text-xs uppercase tracking-[0.25em] text-terracotta mb-6" data-testid="hero-eyebrow">
-                            volume one · undergraduate years
+                            volume one · the journal
                         </p>
-                        <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl leading-[0.95] text-foreground">
-                            Four years,
+                        <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-foreground">
+                            my own
                             <br />
-                            <span className="ink-underline">one notebook</span>,
+                            <span className="ink-underline">experiences</span>
                             <br />
                             <em className="font-handwriting text-terracotta not-italic text-6xl sm:text-7xl lg:text-8xl">
-                                a thousand small disasters.
+                                of university.
                             </em>
                         </h1>
                         <p className="mt-8 max-w-xl text-lg text-sepia leading-relaxed">
-                            This is where I keep the things I would have otherwise forgotten — the
-                            cafeteria conversations, the 3 AM existential spirals, the regrets I am still
-                            apologizing for, and the friendships I never got to thank properly.
+                            experiences, opinions and advices.
                         </p>
                         <div className="mt-10 flex flex-wrap items-center gap-6">
                             <Link

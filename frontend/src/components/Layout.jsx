@@ -21,7 +21,7 @@ export default function Layout() {
                     <Link to="/" className="flex items-baseline gap-2 group" data-testid="brand-link">
                         <BookOpen className="w-5 h-5 text-terracotta -mb-0.5" strokeWidth={1.5} />
                         <span className="font-serif text-2xl tracking-tight text-foreground">
-                            Margins &amp; <em className="font-handwriting text-terracotta not-italic text-3xl ml-1">memories</em>
+                            Beyond <em className="font-handwriting text-terracotta not-italic text-3xl ml-1">the usual</em>
                         </span>
                     </Link>
                     <nav className="flex items-center gap-1 sm:gap-2" data-testid="primary-nav">
@@ -61,7 +61,7 @@ export default function Layout() {
             <footer className="border-t border-pencil py-10 mt-16" data-testid="site-footer">
                 <div className="max-w-5xl mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <p className="font-handwriting text-2xl text-sepia">
-                        — kept in pencil, never in stone.
+                        experiences, opinions and advices.
                     </p>
                     <p className="font-mono text-xs text-muted-foreground">
                         © {new Date().getFullYear()} · a personal journal

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shrikhand&family=Bitter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,25 +6,25 @@
 
 @layer base {
     :root {
-        --background: 36 33% 97%;          /* #FAF8F5 */
-        --foreground: 0 5% 16%;             /* #2A2626 */
-        --card: 39 38% 98%;                 /* #FDFCF9 */
-        --card-foreground: 0 5% 16%;
-        --popover: 39 38% 98%;
-        --popover-foreground: 0 5% 16%;
-        --primary: 14 51% 50%;              /* #C05C3D terracotta */
-        --primary-foreground: 39 38% 98%;
-        --secondary: 39 33% 91%;            /* #EFEAE0 */
-        --secondary-foreground: 0 5% 16%;
-        --muted: 39 33% 91%;
-        --muted-foreground: 30 9% 51%;      /* #8A8376 */
-        --accent: 188 17% 43%;              /* #5C7E83 */
-        --accent-foreground: 39 38% 98%;
+        --background: 24 60% 96%;          /* #FBF1EA warm cream */
+        --foreground: 350 18% 16%;         /* #33272A warm dark */
+        --card: 30 60% 98%;                /* #FDF7F2 paper */
+        --card-foreground: 350 18% 16%;
+        --popover: 30 60% 98%;
+        --popover-foreground: 350 18% 16%;
+        --primary: 346 64% 68%;            /* #DC7D94 light pink */
+        --primary-foreground: 30 60% 98%;
+        --secondary: 350 60% 93%;          /* #F8DDE2 blush surface */
+        --secondary-foreground: 350 18% 16%;
+        --muted: 350 50% 92%;
+        --muted-foreground: 350 10% 45%;   /* #7E6B70 */
+        --accent: 145 25% 65%;             /* #92B89E sage pop */
+        --accent-foreground: 350 18% 16%;
         --destructive: 0 65% 51%;
-        --destructive-foreground: 39 38% 98%;
-        --border: 42 22% 79%;               /* #D5CFC1 pencil */
-        --input: 42 22% 79%;
-        --ring: 14 51% 50%;
+        --destructive-foreground: 30 60% 98%;
+        --border: 350 35% 86%;             /* #EBD3D7 pinkish-pencil */
+        --input: 350 35% 86%;
+        --ring: 346 64% 68%;
         --radius: 0.25rem;
     }
 }
@@ -34,48 +34,50 @@
     html, body, #root { height: 100%; }
     body {
         @apply bg-background text-foreground;
-        font-family: 'Lora', Georgia, serif;
+        font-family: 'Bitter', Georgia, serif;
         font-feature-settings: "liga" 1, "kern" 1;
         background-image:
-            radial-gradient(at 20% 10%, rgba(192, 92, 61, 0.04) 0px, transparent 50%),
-            radial-gradient(at 80% 90%, rgba(92, 126, 131, 0.04) 0px, transparent 50%);
+            radial-gradient(at 12% 8%, rgba(220, 125, 148, 0.10) 0px, transparent 55%),
+            radial-gradient(at 88% 92%, rgba(146, 184, 158, 0.10) 0px, transparent 55%),
+            radial-gradient(at 88% 12%, rgba(245, 199, 126, 0.08) 0px, transparent 55%);
     }
     h1, h2, h3, h4 {
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        letter-spacing: -0.01em;
+        font-family: 'Shrikhand', 'Bitter', Georgia, serif;
+        letter-spacing: -0.005em;
+        font-weight: 400;
     }
-    ::selection { background: rgba(192, 92, 61, 0.25); }
+    ::selection { background: rgba(220, 125, 148, 0.30); }
 }
 
 @layer components {
     .font-handwriting { font-family: 'Caveat', cursive; }
-    .font-serif-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .font-serif-display { font-family: 'Shrikhand', 'Bitter', Georgia, serif; }
     .font-mono-typewriter { font-family: 'Space Mono', ui-monospace, monospace; }
 
-    /* Paper texture using subtle SVG noise */
+    /* Soft confetti-paper background */
     .paper-bg {
-        background-color: #FDFCF9;
+        background-color: #FDF7F2;
         background-image:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18 0 0 0 0 0.15 0 0 0 0 0.12 0 0 0 0.04 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.85 0 0 0 0 0.55 0 0 0 0 0.62 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
     }
 
     .polaroid {
         background: #ffffff;
         padding: 1rem 1rem 3rem 1rem;
-        box-shadow: 0 8px 22px -10px rgba(42, 38, 38, 0.35);
-        border: 1px solid #ece8df;
+        box-shadow: 0 8px 22px -10px rgba(58, 38, 44, 0.30);
+        border: 1px solid #f6e6ea;
     }
 
     .tape {
         position: absolute;
-        background: linear-gradient(180deg, rgba(235, 221, 187, 0.85), rgba(235, 221, 187, 0.65));
-        box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        background: linear-gradient(180deg, rgba(248, 221, 226, 0.9), rgba(248, 221, 226, 0.7));
+        box-shadow: 0 1px 3px rgba(0,0,0,0.10);
         border-left: 1px dashed rgba(0,0,0,0.06);
         border-right: 1px dashed rgba(0,0,0,0.06);
     }
 
     .ink-underline {
-        background-image: linear-gradient(transparent 92%, rgba(192, 92, 61, 0.45) 92%, rgba(192, 92, 61, 0.45) 96%, transparent 96%);
+        background-image: linear-gradient(transparent 88%, rgba(220, 125, 148, 0.55) 88%, rgba(220, 125, 148, 0.55) 96%, transparent 96%);
         background-repeat: no-repeat;
     }
 
@@ -86,20 +88,20 @@
     }
 
     .prose-journal p {
-        font-family: 'Lora', Georgia, serif;
-        font-size: 1.125rem;
-        line-height: 1.85;
-        color: #3a3431;
+        font-family: 'Bitter', Georgia, serif;
+        font-size: 1.0625rem;
+        line-height: 1.8;
+        color: #3a2c30;
         margin-bottom: 1.25rem;
     }
     .prose-journal p:first-of-type::first-letter {
-        font-family: 'Cormorant Garamond', Georgia, serif;
-        font-size: 3.75rem;
-        line-height: 0.9;
+        font-family: 'Shrikhand', 'Bitter', serif;
+        font-size: 3.5rem;
+        line-height: 0.95;
         float: left;
-        margin: 0.35rem 0.6rem 0 0;
-        color: #C05C3D;
-        font-weight: 600;
+        margin: 0.4rem 0.6rem 0 0;
+        color: #DC7D94;
+        font-weight: 400;
     }
 }
 

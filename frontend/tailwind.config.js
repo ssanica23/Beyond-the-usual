@@ -5,8 +5,9 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-                body: ['Lora', 'Georgia', 'serif'],
+                serif: ['Shrikhand', 'Bitter', 'Georgia', 'serif'],
+                display: ['Shrikhand', 'Bitter', 'Georgia', 'serif'],
+                body: ['Bitter', 'Georgia', 'serif'],
                 handwriting: ['Caveat', 'cursive'],
                 mono: ['"Space Mono"', 'ui-monospace', 'monospace'],
             },
@@ -23,13 +24,14 @@ module.exports = {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',
-                paper: '#FDFCF9',
-                cream: '#FAF8F5',
-                ecru: '#EFEAE0',
-                sepia: '#5C564D',
-                terracotta: '#C05C3D',
-                seafoam: '#5C7E83',
-                pencil: '#D5CFC1',
+                paper: '#FDF7F2',
+                cream: '#FBF1EA',
+                ecru: '#F8DDE2',
+                sepia: '#5C4951',
+                terracotta: '#DC7D94',  /* now light pink */
+                seafoam: '#92B89E',     /* sage pop */
+                sunshine: '#F5C77E',    /* warm yellow accent */
+                pencil: '#EBD3D7',
             },
             borderRadius: {
                 lg: 'var(--radius)',

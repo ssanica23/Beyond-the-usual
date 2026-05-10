@@ -2,28 +2,17 @@ export default function About() {
     return (
         <div className="max-w-3xl mx-auto px-6 sm:px-10 pt-16 pb-24" data-testid="about-page">
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-terracotta mb-4">about</p>
-            <h1 className="font-serif text-5xl sm:text-6xl leading-[0.95]">
-                Hi, I'm the
-                <em className="font-handwriting text-terracotta not-italic ml-3">narrator.</em>
+            <h1 className="font-serif text-5xl sm:text-6xl leading-[1.05]">
+                All About <em className="font-handwriting text-terracotta not-italic ml-2">my blogs</em>
             </h1>
 
             <div className="prose-journal mt-12">
                 <p>
-                    I started this journal somewhere around the middle of sophomore year, when I
-                    realised I was already forgetting things. Names of professors. The exact joke
-                    that made an entire dining hall go quiet. The version of myself who had not yet
-                    bombed a midterm.
+                    I publish fun, online blogs that turn my experiences in university into entertaining reads.
                 </p>
                 <p>
-                    Most of what I write here is small. A coffee that mattered. A friendship that
-                    didn't survive winter break. A regret I am only now able to put into words. I
-                    think the best parts of college were never the things I planned — they were the
-                    accidents, and the people who happened to be around when I tripped.
-                </p>
-                <p>
-                    I post when I can, usually at night, usually after the last library has kicked
-                    me out. If something here makes you remember something of your own — write it
-                    down. The forgetting is the only enemy.
+                    From regrets to success and pleasant memories, I make my experiences and advice easy to
+                    enjoy—anytime, anywhere.
                 </p>
             </div>
 
