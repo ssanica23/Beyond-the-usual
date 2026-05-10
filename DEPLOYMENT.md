@@ -1,81 +1,112 @@
 # Self-Hosting Guide — Beyond the usual
 
-This guide walks you through moving your blog **off Emergent** and onto free
-services so you don't have to keep an Emergent subscription.
+This guide moves your blog **off Emergent** onto free services so you don't
+have to keep an Emergent subscription running.
 
 > **Heads up:** you'll need an active Emergent subscription **once** to push to
 > GitHub. After that, everything below runs on free tiers.
-
----
 
 ## What you'll set up
 
 | Piece | Free service | What it does |
 |---|---|---|
 | **Frontend** (React) | **Vercel** | Hosts the website your readers visit |
-| **Backend** (FastAPI) | **Railway** *(or Render)* | Runs the API that powers the admin & posts |
+| **Backend** (FastAPI) | **Fly.io** | Runs the API that powers the admin & posts |
 | **Database** (MongoDB) | **MongoDB Atlas (M0 free tier)** | Stores your posts and admin user |
 
-Total ongoing cost: **$0/month** as long as you stay within free-tier usage
-(plenty for a personal blog).
+Total ongoing cost: **$0/month** for typical personal-blog usage.
+
+> Prefer Render or Railway? Their commands are at the bottom under
+> [Alternative hosts](#alternative-hosts).
 
 ---
 
 ## Step 1 · Push the code to GitHub (do this from inside Emergent)
 
-1. In the Emergent UI, click **"Push to GitHub"** (top of the chat panel).
-2. Pick or create a private repo (e.g. `beyond-the-usual`).
-3. Confirm. Emergent uploads everything in `/app` to GitHub.
-4. After the push, you can cancel Emergent any time — your code is now safe in your GitHub.
+Click the **GitHub icon button** at the bottom of the Emergent chat
+(near where you type messages) → **"Save to GitHub"** → choose **Private**
+repo when prompted. Done.
+
+After the push, your code lives in your own GitHub. You can cancel Emergent
+whenever you want.
 
 ---
 
-## Step 2 · Create a free MongoDB Atlas cluster
+## Step 2 · Free MongoDB cluster on Atlas
 
-1. Go to <https://www.mongodb.com/cloud/atlas/register> and sign up.
-2. Create a **free M0 cluster** (any region near you).
-3. Under **Database Access**, create a user (note the username + password).
-4. Under **Network Access**, click **"Allow access from anywhere"** (`0.0.0.0/0`).
-5. Click **"Connect" → "Drivers"**, copy the connection string. It looks like:
+1. Sign up at <https://www.mongodb.com/cloud/atlas/register>.
+2. Create a free **M0 cluster** (any region near you).
+3. **Database Access** → create a user (note username + password).
+4. **Network Access** → add `0.0.0.0/0` (allow anywhere — required for Fly).
+5. **Connect → Drivers** → copy the connection string. It looks like:
    ```
    mongodb+srv://<user>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
    ```
-6. Replace `<user>` and `<password>` with your real values. Save it for Step 3.
+   Replace `<user>` and `<password>` with the real values. Save it for Step 3.
 
 ---
 
-## Step 3 · Deploy the backend to Railway
+## Step 3 · Deploy the backend to Fly.io
 
-1. Go to <https://railway.com> and sign up with GitHub.
-2. Click **"New Project" → "Deploy from GitHub repo"**, pick your blog repo.
-3. After the first build attempt, set the **Root Directory** to `backend`
-   (Settings → Source → Root Directory).
-4. Add these environment variables (Settings → Variables):
+### 3.1 Install the Fly CLI
 
-   | Key | Value |
-   |---|---|
-   | `MONGO_URL` | the Atlas connection string from Step 2 |
-   | `DB_NAME` | `university_blog` (or any name) |
-   | `JWT_SECRET` | a long random string — generate with `python -c "import secrets;print(secrets.token_hex(32))"` |
-   | `ADMIN_EMAIL` | your login email (e.g. `you@example.com`) |
-   | `ADMIN_PASSWORD` | your **new** secure password |
-   | `CORS_ORIGINS` | your future Vercel URL — **temporarily put `*`** then update after Step 4 |
-   | `PORT` | leave blank, Railway provides this automatically |
+- macOS / Linux:
+  ```bash
+  curl -L https://fly.io/install.sh | sh
+  ```
+- Windows (PowerShell):
+  ```powershell
+  iwr https://fly.io/install.ps1 -useb | iex
+  ```
 
-5. Under **Settings → Networking**, click **"Generate Domain"** to get a
-   public URL like `https://beyond-the-usual-production.up.railway.app`.
-6. Test it: open `<your-railway-url>/api/health` — you should see `{"status":"ok"}`.
+### 3.2 Sign up + log in
+```bash
+fly auth signup    # or: fly auth login if you already have an account
+```
+You'll need to add a credit card, but the free Hobby plan won't charge you for a small backend like this.
 
-> **Render alternative:** the same env vars work on Render. Just create a Web
-> Service → connect repo → Root Directory `backend` → Build `pip install -r
-> requirements.txt` → Start `uvicorn server:app --host 0.0.0.0 --port $PORT`.
+### 3.3 Launch the app
+```bash
+cd backend
+fly launch --no-deploy
+```
+When prompted:
+- **App name:** anything unique, e.g. `beyond-the-usual-api`
+- **Region:** pick one near you (`lhr` London, `iad` US-East, `fra` Frankfurt, `syd` Sydney, …)
+- **Postgres / Redis:** **No** to both
+- **Deploy now:** **No** (we need to set secrets first)
+
+Fly will detect the `Dockerfile` I added and write a fresh `fly.toml`.
+
+### 3.4 Set your secrets
+```bash
+fly secrets set \
+  MONGO_URL="mongodb+srv://USER:PASS@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority" \
+  DB_NAME="university_blog" \
+  JWT_SECRET="$(python -c 'import secrets;print(secrets.token_hex(32))')" \
+  ADMIN_EMAIL="you@example.com" \
+  ADMIN_PASSWORD="your-strong-password" \
+  CORS_ORIGINS="*"
+```
+> On Windows PowerShell, generate the JWT secret separately and paste it in.
+
+### 3.5 Deploy
+```bash
+fly deploy
+```
+The first deploy takes 2–4 minutes. When it finishes, Fly prints your URL,
+e.g. `https://beyond-the-usual-api.fly.dev`.
+
+### 3.6 Test it
+Open `https://<your-app>.fly.dev/api/health` in a browser — you should see
+`{"status":"ok"}`. If you do, the backend is live.
 
 ---
 
 ## Step 4 · Deploy the frontend to Vercel
 
-1. Go to <https://vercel.com> and sign up with GitHub.
-2. Click **"Add New… → Project"**, import your blog repo.
+1. Go to <https://vercel.com> → sign up with GitHub.
+2. **Add New… → Project** → import your blog repo.
 3. Configure:
    - **Framework preset:** *Create React App*
    - **Root Directory:** `frontend`
@@ -85,86 +116,67 @@ Total ongoing cost: **$0/month** as long as you stay within free-tier usage
 
    | Key | Value |
    |---|---|
-   | `REACT_APP_BACKEND_URL` | your Railway URL from Step 3 (e.g. `https://beyond-the-usual-production.up.railway.app`) |
+   | `REACT_APP_BACKEND_URL` | `https://<your-app>.fly.dev` (no trailing slash) |
 
-5. Click **Deploy**. After ~2 minutes you'll get a URL like
+5. Click **Deploy**. After ~2 minutes you get a URL like
    `https://beyond-the-usual.vercel.app`.
-6. **Visit it.** It should load. Visit `/admin/login` to confirm you can sign in.
+6. Visit it. Sign in at `/admin/login` with the email + password you set in Step 3.4.
 
 ---
 
 ## Step 5 · Lock down CORS (recommended)
 
-Once Vercel gives you the final URL, go back to Railway → Variables → update:
+Now that you have your real Vercel URL, tighten the backend:
 
-| Key | Value |
-|---|---|
-| `CORS_ORIGINS` | `https://beyond-the-usual.vercel.app` (your real Vercel URL) |
-
-Click "Deploy" on Railway to apply. This makes sure only your blog can talk
-to your backend.
-
----
-
-## Step 6 · (Optional) Custom domain
-
-Both Vercel and Railway let you attach a custom domain (e.g.
-`beyondtheusual.com`) for free. Buy a domain on Namecheap/Cloudflare, then:
-
-- **Vercel:** Project → Settings → Domains → add domain, follow DNS instructions.
-- After the domain works on Vercel, update `CORS_ORIGINS` on Railway to include it.
-
----
-
-## How to update your blog after self-hosting
-
-Local development:
 ```bash
-git clone https://github.com/<you>/beyond-the-usual.git
-cd beyond-the-usual
-
-# backend
 cd backend
-cp .env.example .env   # edit with your local Mongo URL
-pip install -r requirements.txt
-uvicorn server:app --reload --port 8001
-
-# frontend (in another terminal)
-cd ../frontend
-cp .env.example .env   # set REACT_APP_BACKEND_URL=http://localhost:8001
-yarn install
-yarn start
+fly secrets set CORS_ORIGINS="https://beyond-the-usual.vercel.app"
 ```
+(That auto-redeploys. Use your actual Vercel URL.)
 
-Push changes:
+This makes sure only your site can talk to your backend.
+
+---
+
+## Updating your blog later
+
+Both Vercel and Fly auto-redeploy on `git push` (Vercel does it via the
+GitHub integration; Fly needs a tiny step). For Fly, add a deploy command:
+
 ```bash
-git add .
-git commit -m "new entry"
-git push
+cd backend
+fly deploy
 ```
-
-Both Vercel and Railway watch your GitHub repo and **auto-redeploy on every push** —
-no extra work.
+…or set up the [Fly GitHub Action](https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/)
+once for fully automatic deploys.
 
 ---
 
 ## Common gotchas
 
-- **CORS errors after changing the Vercel URL?** Update `CORS_ORIGINS` on Railway and redeploy.
-- **Login works locally but not in production?** Make sure `JWT_SECRET` is set on Railway and is the same across deploys (otherwise old tokens become invalid — but this only matters if you change it).
-- **Images don't show?** They're stored as base64 inside MongoDB. If a single image is huge (>4MB), the editor blocks it; if you bypass that, you'll hit Mongo's 16MB doc limit. For a high-volume photo blog, ask me to wire up object storage later.
-- **Free MongoDB Atlas pauses after 60 days of inactivity.** Just hit Resume — your data is preserved.
+- **`fly deploy` says "App not found"** → run `fly launch --no-deploy` first to register the app.
+- **Health check failing** → make sure the `MONGO_URL` secret is set and Atlas Network Access allows `0.0.0.0/0`.
+- **Login works once but not after a while** → check that `JWT_SECRET` is set as a Fly secret (not just an env var) so it persists across restarts.
+- **Free Atlas cluster pauses after 60 days idle** → click "Resume" in Atlas — your data is preserved.
 
 ---
 
-## Costs at a glance
+## Alternative hosts
 
-| Service | Free tier covers | When you'd pay |
-|---|---|---|
-| Vercel Hobby | 100 GB bandwidth/mo, unlimited deploys | Only if your blog goes viral |
-| Railway | $5 free credit/mo, sleeps after idle | Heavy 24/7 traffic (~$5–10/mo) |
-| MongoDB Atlas M0 | 512 MB storage | When you cross 512 MB of posts/images |
+### Render
+- New → Web Service → connect repo
+- **Root Directory:** `backend`
+- **Runtime:** `Python 3`
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `uvicorn server:app --host 0.0.0.0 --port $PORT`
+- Set the same secrets from Step 3.4 in **Environment**.
 
-For a personal blog, the free tiers are essentially permanent.
+### Railway
+- New Project → Deploy from GitHub repo
+- **Settings → Source → Root Directory:** `backend`
+- **Settings → Networking → Generate Domain**
+- Set the same secrets in **Variables**. Railway auto-uses the `Procfile`.
+
+---
 
 That's it — you'll never need to pay Emergent again once Steps 1–4 are done.

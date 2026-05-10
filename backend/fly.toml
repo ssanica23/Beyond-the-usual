@@ -1,0 +1,33 @@
+# fly.toml — Fly.io app configuration for the backend
+#
+# Replace `app = "..."` with your unique app name when you run `fly launch`,
+# or let Fly generate one for you and it will overwrite this file.
+
+app = "beyond-the-usual-api"
+primary_region = "iad"   # change to your closest region (lhr, fra, syd, sin, sjc, etc.)
+kill_signal = "SIGINT"
+kill_timeout = 5
+
+[build]
+
+[env]
+  PORT = "8001"
+
+[http_service]
+  internal_port = 8001
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/api/health"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
