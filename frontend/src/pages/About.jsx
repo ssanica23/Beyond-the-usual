@@ -19,13 +19,13 @@ export default function About() {
             <div className="mt-16 relative max-w-md">
                 <div className="polaroid">
                     <span className="tape -top-3 left-10 w-20 h-6 rotate-[-6deg]" aria-hidden />
-                    <div
-                        className="aspect-[4/3] bg-gradient-to-br from-ecru via-pencil to-secondary flex items-center justify-center"
-                    >
-                        <span className="font-handwriting text-3xl text-sepia/80">[a self-portrait, allegedly]</span>
-                    </div>
+                    <img
+                        src="https://i.postimg.cc/VspLqVSP/image.jpg"
+                        alt="me"
+                        className="aspect-[4/3] w-full object-cover"
+                    />
                     <p className="text-center font-handwriting text-2xl text-sepia mt-4">
-                        the editor-in-chief of one (1) reader
+                        Sanica: Blog writer :) reader
                     </p>
                 </div>
             </div>
