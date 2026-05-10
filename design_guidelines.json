@@ -1,0 +1,86 @@
+{
+  "theme": "LIGHT",
+  "archetype": "1 (Organic & Earthy) - Cozy Journal / Nostalgic",
+  "colors": {
+    "background": {
+      "primary": "#FAF8F5",
+      "secondary": "#EFEAE0",
+      "paper": "#FDFCF9"
+    },
+    "text": {
+      "primary": "#2A2626",
+      "secondary": "#5C564D",
+      "muted": "#8A8376"
+    },
+    "accent": {
+      "primary": "#C05C3D",
+      "secondary": "#5C7E83",
+      "tape": "rgba(235, 221, 187, 0.7)"
+    },
+    "border": {
+      "pencil": "#D5CFC1",
+      "ink": "rgba(42, 38, 38, 0.15)"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Cormorant Garamond, serif",
+      "handwriting": "Caveat, cursive",
+      "body": "Lora, serif",
+      "mono": "Space Mono, monospace"
+    },
+    "scales": {
+      "h1": "text-5xl sm:text-6xl tracking-tight leading-none",
+      "h2": "text-3xl sm:text-4xl tracking-tight",
+      "h3": "text-2xl",
+      "body": "text-lg leading-relaxed",
+      "accent": "text-xl sm:text-2xl font-[Caveat]"
+    }
+  },
+  "spacing_and_layout": {
+    "philosophy": "Asymmetric, scrapbook style. Elements should feel intentionally placed but not perfectly aligned. Use generous padding (p-8 to p-16) for breathing room.",
+    "container": "max-w-4xl mx-auto px-4 sm:px-8",
+    "grids": "Bento style but with rotations. Use slight negative margins or translate values to overlap elements. Use rotate-[-2deg] or rotate-[3deg] on images."
+  },
+  "surfaces": {
+    "polaroid": "bg-white p-4 pb-12 shadow-md border border-neutral-200 transition-transform duration-300 hover:rotate-0",
+    "paper": "bg-[#FDFCF9] shadow-[0_2px_10px_rgba(0,0,0,0.05)] border border-[#D5CFC1]",
+    "tape": "absolute w-24 h-8 bg-[#EBDDBB]/80 shadow-sm rotate-[-45deg] z-10"
+  },
+  "components": {
+    "blog_card": "A polaroid style container or a torn paper container. Image on top, generous bottom white space with handwriting font for the title or date.",
+    "header": "Solid paper-colored sticky nav with bottom pencil border.",
+    "buttons": "Raw text link with an underline, or a slightly misaligned rectangular block that looks like a stamp."
+  },
+  "media": {
+    "hero_image": {
+      "url": "https://images.unsplash.com/photo-1729693862649-c457544c9c69?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHwzfHx2aW50YWdlJTIwbm90ZWJvb2slMjBjb2ZmZWUlMjBqb3VybmFsfGVufDB8fHx8MTc3ODQyMzgwMXww&ixlib=rb-4.1.0&q=85",
+      "description": "Stack of books and coffee for the main journal cover/intro."
+    },
+    "memory_1": {
+      "url": "https://images.unsplash.com/photo-1699155759495-855eaf21cfde?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwbm90ZWJvb2slMjBjb2ZmZWUlMjBqb3VybmFsfGVufDB8fHx8MTc3ODQyMzgwMXww&ixlib=rb-4.1.0&q=85",
+      "description": "University campus building, good for a 'memories' post."
+    },
+    "memory_2": {
+      "url": "https://images.unsplash.com/photo-1688158306666-ad466c06eb07?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAxODF8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwbm90ZWJvb2slMjBjb2ZmZWUlMjBqb3VybmFsfGVufDB8fHx8MTc3ODQyMzgwMXww&ixlib=rb-4.1.0&q=85",
+      "description": "Person holding book next to coffee."
+    }
+  },
+  "custom_css": {
+    "tape": ".tape { position: absolute; background: rgba(235, 221, 187, 0.8); box-shadow: 0 1px 3px rgba(0,0,0,0.2); }",
+    "polaroid": ".polaroid { display: inline-block; background: #fff; padding: 1rem; padding-bottom: 3rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border: 1px solid #eaeaea; }"
+  },
+  "instructions_to_main_agent": [
+    "Install fonts: Caveat, Cormorant Garamond, Lora, Space Mono via Google Fonts.",
+    "Do NOT use typical corporate SaaS cards. Instead, style blog listings as polaroids scattered on a table or notebook pages.",
+    "Use Tailwind classes for rotations like -rotate-2 or rotate-3 on images to give a physical scrapbook feel.",
+    "For the admin dashboard, keep it clean but retain the warm color palette (paper background).",
+    "Add 'washi tape' divs on corners of images in individual blog posts. Use a simple absolute positioned div with a semi-transparent beige background.",
+    "Use 'Caveat' for dates, tags, and small notes to look like handwriting in the margins.",
+    "Ensure the layout has generous padding (p-8, p-12) to feel like a relaxed reading experience."
+  ],
+  "accessibility": {
+    "focus_states": "Use the accent color #C05C3D for focus rings. Ensure high contrast for text on the cream backgrounds.",
+    "testing": "All interactive elements must have data-testid attributes."
+  }
+}
