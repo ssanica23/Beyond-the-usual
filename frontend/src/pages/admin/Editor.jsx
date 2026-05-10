@@ -14,6 +14,7 @@ export default function Editor() {
     const [content, setContent] = useState("");
     const [tag, setTag] = useState("memories");
     const [coverImage, setCoverImage] = useState("");
+    const [status, setStatus] = useState("draft"); // new entries start as draft
     const [loading, setLoading] = useState(isEdit);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
@@ -22,19 +23,13 @@ export default function Editor() {
         if (!isEdit) return;
         (async () => {
             try {
-                // We need to fetch by id — list and find, or fetch by id endpoint.
-                // We'll use list and filter, since posts are few for a personal blog.
-                const { data } = await api.get("/posts");
-                const found = data.find((p) => p.id === id);
-                if (found) {
-                    setTitle(found.title);
-                    setExcerpt(found.excerpt || "");
-                    setContent(found.content);
-                    setTag(found.tag);
-                    setCoverImage(found.cover_image || "");
-                } else {
-                    setError("Entry not found.");
-                }
+                const { data: post } = await api.get(`/admin/posts/${id}`);
+                setTitle(post.title);
+                setExcerpt(post.excerpt || "");
+                setContent(post.content);
+                setTag(post.tag);
+                setCoverImage(post.cover_image || "");
+                setStatus(post.status || "published");
             } catch (e) {
                 setError(formatApiErrorDetail(e.response?.data?.detail) || e.message);
             } finally {
@@ -55,8 +50,7 @@ export default function Editor() {
         reader.readAsDataURL(file);
     };
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
+    const save = async (targetStatus) => {
         setError("");
         setSubmitting(true);
         try {
@@ -66,6 +60,7 @@ export default function Editor() {
                 content: content.trim(),
                 tag,
                 cover_image: coverImage || null,
+                status: targetStatus,
             };
             if (isEdit) {
                 await api.put(`/posts/${id}`, payload);
@@ -80,18 +75,28 @@ export default function Editor() {
         }
     };
 
-    if (loading) return <div className="max-w-3xl mx-auto px-6 py-16 font-handwriting text-2xl text-muted-foreground">loading…</div>;
+    if (loading)
+        return (
+            <div className="max-w-3xl mx-auto px-6 py-16 font-handwriting text-2xl text-muted-foreground">
+                loading…
+            </div>
+        );
 
     return (
         <div className="max-w-3xl mx-auto px-6 sm:px-10 pt-12 pb-24" data-testid="admin-editor-page">
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-terracotta">
                 {isEdit ? "edit entry" : "new entry"}
+                {isEdit && status === "draft" && (
+                    <span className="ml-3 inline-block bg-secondary text-foreground px-2 py-0.5 text-[10px]">
+                        draft
+                    </span>
+                )}
             </p>
             <h1 className="font-serif text-5xl mt-2 mb-10">
                 {isEdit ? "Tidy up the page" : "What happened today?"}
             </h1>
 
-            <form onSubmit={onSubmit} className="space-y-8" data-testid="post-form">
+            <form onSubmit={(e) => e.preventDefault()} className="space-y-8" data-testid="post-form">
                 <div>
                     <label className="font-mono text-[10px] uppercase tracking-[0.2em] text-sepia block mb-2">
                         title
@@ -189,30 +194,48 @@ export default function Editor() {
                         className="w-full bg-paper border border-pencil focus:border-terracotta outline-none p-4 font-body text-lg leading-relaxed"
                         data-testid="post-content-input"
                     />
+                    <p className="font-mono text-[10px] text-muted-foreground mt-2 text-right">
+                        {content.trim() ? content.trim().split(/\s+/).length : 0} words
+                    </p>
                 </div>
 
                 {error && (
                     <p className="font-mono text-xs text-destructive" data-testid="post-error">{error}</p>
                 )}
 
-                <div className="flex items-center gap-3 pt-4">
+                <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-pencil">
                     <button
-                        type="submit"
-                        disabled={submitting}
-                        className="px-6 py-3 bg-foreground text-cream font-mono text-xs uppercase tracking-[0.25em] hover:bg-terracotta transition-colors disabled:opacity-60"
-                        data-testid="post-save-btn"
+                        type="button"
+                        onClick={() => save("draft")}
+                        disabled={submitting || !title.trim() || !content.trim()}
+                        className="px-5 py-3 border-2 border-foreground text-foreground font-mono text-xs uppercase tracking-[0.25em] hover:bg-foreground hover:text-cream transition-colors disabled:opacity-60"
+                        data-testid="post-save-draft-btn"
                     >
-                        {submitting ? "saving…" : isEdit ? "save changes" : "publish entry"}
+                        {submitting ? "saving…" : "save as draft"}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => save("published")}
+                        disabled={submitting || !title.trim() || !content.trim()}
+                        className="px-6 py-3 bg-terracotta text-cream font-mono text-xs uppercase tracking-[0.25em] hover:bg-foreground transition-colors disabled:opacity-60"
+                        data-testid="post-publish-btn"
+                    >
+                        {submitting ? "saving…" : isEdit && status === "published" ? "save changes" : "publish entry"}
                     </button>
                     <button
                         type="button"
                         onClick={() => navigate("/admin")}
-                        className="font-handwriting text-2xl text-sepia hover:text-terracotta"
+                        className="ml-auto font-handwriting text-2xl text-sepia hover:text-terracotta"
                         data-testid="post-cancel-btn"
                     >
                         cancel
                     </button>
                 </div>
+                {!isEdit && (
+                    <p className="font-handwriting text-xl text-muted-foreground">
+                        drafts stay private — only published entries show up on your blog.
+                    </p>
+                )}
             </form>
         </div>
     );

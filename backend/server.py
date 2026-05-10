@@ -103,6 +103,7 @@ class PostBase(BaseModel):
     content: str
     tag: str = "memories"  # memories | regrets | fun
     cover_image: Optional[str] = None  # base64 data URL or external URL
+    status: str = "published"  # "published" | "draft"
 
 
 class PostCreate(PostBase):
@@ -115,6 +116,7 @@ class PostUpdate(BaseModel):
     content: Optional[str] = None
     tag: Optional[str] = None
     cover_image: Optional[str] = None
+    status: Optional[str] = None
 
 
 class PostOut(PostBase):
@@ -173,7 +175,7 @@ async def me(user: dict = Depends(get_current_admin)):
 # ---------------- Posts routes ----------------
 @api_router.get("/posts", response_model=List[PostOut])
 async def list_posts(tag: Optional[str] = None):
-    query = {}
+    query = {"status": {"$ne": "draft"}}
     if tag and tag != "all":
         query["tag"] = tag
     cursor = db.posts.find(query, {"_id": 0}).sort("created_at", -1)
@@ -183,7 +185,23 @@ async def list_posts(tag: Optional[str] = None):
 
 @api_router.get("/posts/{slug}", response_model=PostOut)
 async def get_post(slug: str):
-    post = await db.posts.find_one({"slug": slug}, {"_id": 0})
+    post = await db.posts.find_one(
+        {"slug": slug, "status": {"$ne": "draft"}}, {"_id": 0}
+    )
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return post
+
+
+@api_router.get("/admin/posts", response_model=List[PostOut])
+async def admin_list_posts(user: dict = Depends(get_current_admin)):
+    cursor = db.posts.find({}, {"_id": 0}).sort("created_at", -1)
+    return await cursor.to_list(500)
+
+
+@api_router.get("/admin/posts/{post_id}", response_model=PostOut)
+async def admin_get_post(post_id: str, user: dict = Depends(get_current_admin)):
+    post = await db.posts.find_one({"id": post_id}, {"_id": 0})
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     return post
@@ -202,6 +220,7 @@ async def create_post(payload: PostCreate, user: dict = Depends(get_current_admi
         "content": payload.content,
         "tag": payload.tag,
         "cover_image": payload.cover_image,
+        "status": payload.status if payload.status in ("draft", "published") else "published",
         "created_at": now,
         "updated_at": now,
     }
@@ -243,6 +262,11 @@ async def on_startup():
     await db.users.create_index("email", unique=True)
     await db.posts.create_index("slug", unique=True)
     await db.posts.create_index("created_at")
+
+    # One-time migration: tag legacy posts (no status field) as published
+    await db.posts.update_many(
+        {"status": {"$exists": False}}, {"$set": {"status": "published"}}
+    )
 
     admin_email = os.environ["ADMIN_EMAIL"].lower()
     admin_password = os.environ["ADMIN_PASSWORD"]
