@@ -69,7 +69,7 @@ export default function Home() {
                         <div className="absolute top-2 right-6 polaroid wiggle-in" style={{ "--start-rot": "5deg", "--end-rot": "5deg" }}>
                             <span className="tape -top-3 left-1/2 -translate-x-1/2 w-24 h-6 rotate-[-3deg]" aria-hidden />
                             <img
-                                src="https://images.unsplash.com/photo-1729693862649-c457544c9c69?crop=entropy&cs=srgb&fm=jpg&w=600&q=80"
+                                src="https://i.postimg.cc/bwJT7g0D/image.jpg"
                                 alt="journal"
                                 className="w-56 h-72 object-cover"
                             />
@@ -80,12 +80,12 @@ export default function Home() {
                         <div className="absolute bottom-0 left-2 polaroid wiggle-in" style={{ animationDelay: "200ms", "--start-rot": "-7deg", "--end-rot": "-7deg" }}>
                             <span className="tape -top-3 left-6 w-20 h-6 rotate-[-12deg]" aria-hidden />
                             <img
-                                src="https://images.unsplash.com/photo-1699155759495-855eaf21cfde?crop=entropy&cs=srgb&fm=jpg&w=600&q=80"
+                                src="https://i.postimg.cc/sXQfqk1C/mail-google.jpg"
                                 alt="campus"
                                 className="w-52 h-64 object-cover"
                             />
                             <p className="absolute bottom-3 left-0 right-0 text-center font-handwriting text-xl text-sepia">
-                                that one library window
+                                The rare times I played badminton
                             </p>
                         </div>
                     </div>
