@@ -20,12 +20,12 @@ export default function About() {
                 <div className="polaroid">
                     <span className="tape -top-3 left-10 w-20 h-6 rotate-[-6deg]" aria-hidden />
                     <img
-                        src="https://i.postimg.cc/VspLqVSP/image.jpg"
+                        src="https://i.postimg.cc/gJD49T7M/image.jpg"
                         alt="me"
                         className="aspect-[4/3] w-full object-cover"
                     />
                     <p className="text-center font-handwriting text-2xl text-sepia mt-4">
-                        Sanica: Blog writer :) reader
+                        Sanica: Blog writer :)
                     </p>
                 </div>
             </div>
