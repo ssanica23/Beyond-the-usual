@@ -29,6 +29,7 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 app = FastAPI(title="University Journal API")
+app.mount("/static", StaticFiles(directory="public"), name="static")
 api_router = APIRouter(prefix="/api")
 
 
