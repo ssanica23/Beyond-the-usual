@@ -101,7 +101,7 @@ class PostBase(BaseModel):
     title: str
     excerpt: str = ""
     content: str
-    tag: str = "memories"  # memories | regrets | fun
+    tag: str = "memories"  # memories | regrets | fun | academic  
     cover_image: Optional[str] = None  # base64 data URL or external URL
     status: str = "published"  # "published" | "draft"
 
