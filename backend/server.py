@@ -11,6 +11,8 @@ import bcrypt
 import jwt
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
+from typing import Literal
+tag: Literal["memories", "regrets", "fun", "academic"] = "memories"
 
 from fastapi import FastAPI, APIRouter, HTTPException, Request, Response, Depends
 from starlette.middleware.cors import CORSMiddleware
