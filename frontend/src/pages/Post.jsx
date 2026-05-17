@@ -49,8 +49,8 @@ export default function Post() {
             </Link>
 
             <header className="mb-12">
-                <p className="font-mono text-xs">
-  DEBUG: {JSON.stringify(post)}
+                <p className="font-mono text-xs uppercase tracking-[0.25em] text-terracotta mb-4">
+                    {formatDate(post.created_at)} · filed under {post.tag}
                 </p>
                 <h1 className="font-serif text-5xl sm:text-6xl leading-[1] tracking-tight" data-testid="post-title">
                     {post.title}
@@ -79,8 +79,8 @@ export default function Post() {
             </div>
 
             <div className="mt-20 pt-10 border-t border-pencil flex items-center justify-between">
-                <p className="font-mono text-xs">
-  DEBUG: {JSON.stringify(post)}
+                <p  className="font-handwriting text-2xl text-muted-foreground">
+                    — written {formatDate(post.created_at)}
                 </p>
                 <Link to="/blog" className="font-mono text-xs uppercase tracking-[0.2em] text-terracotta hover:underline">
                     next entry →
