@@ -79,8 +79,8 @@ export default function Post() {
             </div>
 
             <div className="mt-20 pt-10 border-t border-pencil flex items-center justify-between">
-                <p className="font-handwriting text-2xl text-muted-foreground">
-                    — written {formatDate(post.created_at)}
+                <p className="font-mono text-xs">
+  DEBUG: {JSON.stringify(post)}
                 </p>
                 <Link to="/blog" className="font-mono text-xs uppercase tracking-[0.2em] text-terracotta hover:underline">
                     next entry →
