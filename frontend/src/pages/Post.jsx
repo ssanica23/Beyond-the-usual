@@ -50,7 +50,7 @@ export default function Post() {
 
             <header className="mb-12">
                 <p className="font-mono text-xs uppercase tracking-[0.25em] text-terracotta mb-4">
-                   written {new Date(post.created_at).toLocaleDateString("en-GB")} · filed under {{post.tags?.join(", ")}}
+                   written {new Date(post.created_at).toLocaleDateString("en-GB")} · filed under {{post.tags?.join(", ")}
                 </p>
                 <h1 className="font-serif text-5xl sm:text-6xl leading-[1] tracking-tight" data-testid="post-title">
                     {post.title}
